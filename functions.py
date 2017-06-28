@@ -22,26 +22,6 @@ def send_text_message(txt):
     twilio.messages.create(to=to_number, from_=from_number, body=txt)
 
 
-def get_commandline_arguments():
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument("-file", help="file containing filters")
-    parser.add_argument("-tweet", help="file containing messages to tweet")
-    parser.add_argument("-interval", help="interval in minutes to send emails", type=int)
-    parser.add_argument("-frequency", help="frequency in hours to send original tweets", type=int)
-
-    args = parser.parse_args()
-
-    if args.interval is None:
-        args.interval = DEFAULT_INTERVAL
-    # if args.limit is None:
-    #     args.limit = DEFAULT_LIMIT
-    # if args.sleep is None:
-    #     args.sleep = DEFAULT_SLEEP
-
-    return args
-
-
 def create_filter_string_from_file(file):
     filename = open(file)
     f = filename.readlines()
@@ -168,9 +148,11 @@ def build_email(instance):
 
 
 def load_default_configs():
-    default_configs = {'DEFAULT_CONSECUTIVE_NO_TWEET_EMAIL_THRESHOLD': DEFAULT_CONSECUTIVE_NO_TWEET_EMAIL_THRESHOLD,
+    default_configs = {'DEFAULT_EMAIL_ALERT_THRESHOLD': DEFAULT_EMAIL_ALERT_THRESHOLD,
+                       'DEFAULT_TEXT_ALERT_THRESHOLD': DEFAULT_TEXT_ALERT_THRESHOLD,
                        'DEFAULT_TWEET_FREQUENCY': DEFAULT_TWEET_FREQUENCY,
-                       'DEFAULT_EMAIL_RECIPIENT': DEFAULT_EMAIL_RECIPIENT, 'DEFAULT_EMAIL_SENDER': DEFAULT_EMAIL_SENDER}
+                       'DEFAULT_EMAIL_RECIPIENT': DEFAULT_EMAIL_RECIPIENT,
+                       'DEFAULT_EMAIL_SENDER': DEFAULT_EMAIL_SENDER}
     return default_configs
 
 
