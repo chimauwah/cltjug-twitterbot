@@ -20,9 +20,6 @@ class DBConnection:
     client = MongoClient(db_url)
     db = client[db_name]
 
-    def get_db_connection(self):
-        return DBConnection.db
-
     def get_tweet_collection(self):
         coll = DBConnection.db[db_tweet_collection]
         return coll
@@ -32,7 +29,7 @@ class DBConnection:
         return coll
 
 
-# instance of this twitter bot application
+# instance of this tweet bot application
 class TweetBotApp:
     db_connection = DBConnection()
 
@@ -105,12 +102,12 @@ def main():
     instance.tweet_job_id = job_id
 
     s = BlockingScheduler()
-    s.add_job(lambda: execute(instance), 'interval', seconds=frequency, id=job_id)
+    s.add_job(lambda: execute(instance), 'interval', hours=frequency, id=job_id)
     # ** eventually change frequency to hours, but for testing, leave to secs or minutes **
     print('CLTJUG TweetBot initialized and executing')
-    cadence = 'seconds' #'hours'
+    cadence = 'hours'
     if frequency == 1:
-        cadence = 'second' #'hour'
+        cadence = 'hour'
     print('Tweeting every {} {}'.format(frequency, cadence))
     s.start()
 

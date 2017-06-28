@@ -1,17 +1,14 @@
-# ??
-DEFAULT_SLEEP = 5
+# NOT USED
+# DEFAULT_SLEEP = 5
 
 # default number of tweets per email
 # negative number means no limit
-DEFAULT_LIMIT = 25
+# DEFAULT_LIMIT = 25
 
 # default interval (in minutes) to send emails
-DEFAULT_INTERVAL = 60
+# DEFAULT_INTERVAL = 60
 
-# default measurement of interval to send out tweets
-DEFAULT_TWEET_FREQUENCY_MEASUREMENT = 'hours'
-
-# default interval to send out tweets
+# default interval to send out tweets (measured in hours)
 DEFAULT_TWEET_FREQUENCY = 4
 
 # default number of consecutive scheduled tweets not sent before sending an email
