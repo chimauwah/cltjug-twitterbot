@@ -1,13 +1,13 @@
-# NOT USED
-# DEFAULT_SLEEP = 5
+"""default configs"""
 
-# default number of tweets per email
-# negative number means no limit
-# DEFAULT_LIMIT = 25
+""" ******** Default configs for scraper app ******** """
+# default interval (in hours) for send email with tweets to review
+DEFAULT_EMAIL_INTERVAL = 8
 
-# default interval (in minutes) to send emails
-# DEFAULT_INTERVAL = 60
+DEFAULT_FILTER_STRING = '@burrsutter,#javaee,@stackjava,#javacodegeeks,@java,#javaee,@java_ee,@habuma,#NFJS,@nofluff,' \
+                        '@springcentral,@neal4d,@kenkousen,@venkat_s,@overopshq,@SoftwareTopNews '
 
+""" ******** Default configs for tweet app ******** """
 # default interval to send out tweets (measured in hours)
 DEFAULT_TWEET_FREQUENCY = 4
 
