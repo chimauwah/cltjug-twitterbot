@@ -20,16 +20,6 @@ def send_text_message(txt):
     twilio.messages.create(to=to_number, from_=from_number, body=txt)
 
 
-def create_filter_string_from_db():
-    """returns the filter string from database config
-
-    :return:
-    """
-    filterstring = get_config_value(FILTER_STRING, DEFAULT_FILTER_STRING)
-    print('Using the filters: ' + filterstring)
-    return filterstring
-
-
 def create_filter_string_from_file(file):
     """create filter string from given file of filters
 
@@ -76,16 +66,16 @@ def build_gmail_service():
     return gmail_service
 
 
-def add_email_footer(email):
-    """add ascii art footer
-
-    :param email:
-    :return:
-    """
-    body = email['msg'] + '\n\n\n' + EMAIL_FOOTER_LINE_1 + '\n' \
-           + EMAIL_FOOTER_LINE_2 + '\n' + EMAIL_FOOTER_LINE_3 + '\n' \
-           + EMAIL_FOOTER_LINE_4 + '\n' + EMAIL_FOOTER_LINE_5
-    email['msg'] = body
+# def add_email_footer(email):
+#     """add ascii art footer
+#
+#     :param email:
+#     :return:
+#     """
+#     body = email['msg'] + '\n\n\n' + EMAIL_FOOTER_LINE_1 + '\n' \
+#            + EMAIL_FOOTER_LINE_2 + '\n' + EMAIL_FOOTER_LINE_3 + '\n' \
+#            + EMAIL_FOOTER_LINE_4 + '\n' + EMAIL_FOOTER_LINE_5
+#     email['msg'] = body
 
 
 def send_email(email):
@@ -94,7 +84,7 @@ def send_email(email):
     :param email:
     :return:
     """
-    add_email_footer(email)
+    # add_email_footer(email)
     msg = MIMEText(email['msg'])
     msg['to'] = email['to']
     msg['from'] = email['from']
@@ -111,6 +101,22 @@ def send_email(email):
         print("Successfully sent email to {} @ {}. {}".format(email['to'], datetime.now(), str(result)))
     except Exception as ex:
         print('Could not send email. An error occurred: %s' % ex)
+
+
+def send_retweet(twitter, tweepy, tweetid, tweeturl):
+    try:
+        twitter.retweet(tweetid)
+        print('Retweeted @ {}: {}'.format(datetime.now(), tweeturl))
+        return {'success': True}
+    except tweepy.TweepError as ex:
+        errmsg = ex.args[0][0]['message']
+        body = 'ERROR: {}\nCould not retweet: "{}"'.format(errmsg, tweeturl)
+        email = build_email()
+        email['msg'] = body
+        email['subj'] = 'TWITTERBOT ALERT: Tweet Error'
+        send_email(email)
+        print(body)
+        return {'success': False, 'errMsg': errmsg}
 
 
 def send_tweet(twitter, tweepy, msg):
@@ -132,10 +138,7 @@ def send_tweet(twitter, tweepy, msg):
 def create_collections_of_tweets_for_email(tweets):
     collection_of_tweets = '*** This email consists of {} tweets ***\n\n'.format(len(tweets))
     for tweet in tweets:
-        id = tweet.id_str
-        user = tweet.user.screen_name
-        tweet_url = 'https://twitter.com/{}/status/{}'.format(user, id)
-
+        tweet_url = build_tweet_url(tweet)
         collection_of_tweets = collection_of_tweets + tweet_url + '\n' + tweet.text + '\n\n'
 
     return collection_of_tweets
@@ -159,7 +162,7 @@ def get_config_value(key, defaultvalue):
     :param defaultvalue:
     :return:
     """
-    configs = DBConnection().get_configs_collection()
+    configs = DBConnection().get_configs()
     document = configs.distinct(key)
     try:
         config_value = document[0]
@@ -170,3 +173,15 @@ def get_config_value(key, defaultvalue):
         config_value = defaultvalue
 
     return config_value
+
+
+def build_tweet_url(tweet):
+    """takes twitter status object and creates url to tweet
+
+    :param tweet:
+    :return:
+    """
+    id = tweet.id_str
+    user = tweet.user.screen_name
+    tweet_url = 'https://twitter.com/{}/status/{}'.format(user, id)
+    return tweet_url

@@ -1,1 +1,1 @@
-worker: python scraper.py
+worker: python twitterbot.py

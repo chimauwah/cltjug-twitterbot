@@ -18,7 +18,7 @@ twilio = Client(acct_sid, auth_token)
 
 
 class DBConnection:
-    """ using the singleton pattern, makes connection with Mondo client and provides ability to interact with
+    """ using the singleton pattern, makes connection with Mongo client and provides ability to interact with
     database """
 
     __instance = None
@@ -31,11 +31,14 @@ class DBConnection:
             DBConnection.__instance.database = db
         return DBConnection.__instance
 
-    def get_tweet_collection(self):
-        return self.database[db_tweet_collection]
+    def get_tweet_review(self):
+        return self.database[db_tweet_review]
 
-    def get_configs_collection(self):
-        return self.database[db_config_collection]
+    def get_tweet_queue(self):
+        return self.database[db_tweet_queue]
+
+    def get_configs(self):
+        return self.database[db_configs]
 
 
 
