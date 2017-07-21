@@ -1,6 +1,5 @@
-db_url = 'mongodb://ccu:ccu@ds127389.mlab.com:27389/ccudemo-db'
-db_name = 'ccudemo-db'
-# db_tweet_collection = 'cltjug_twitterbot_tweets'
-db_tweet_collection = 'test_tweets'
-db_config_collection = 'cltjug_twitterbot_configs'
-
+db_url = 'mongodb://cltjug:cltjug@ds145952.mlab.com:45952/cltjug-twitterbot-db'
+db_name = 'cltjug-twitterbot-db'
+db_tweet_review = 'tweetreview'
+db_tweet_queue = 'tweetqueue'
+db_configs = 'configs'
